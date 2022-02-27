@@ -10,9 +10,10 @@ class Calculator extends Component {
         this.state = { data: '', prev_data: '', comp: ''}
     }
 
+
     calculate = () => {
         if (this.state.prev_data===''){
-            return 0;
+            this.state.prev_data="0";
         }
         try {
             let result;
@@ -36,6 +37,30 @@ class Calculator extends Component {
             }
         } catch (e) {
             this.setState({data: 'error'})
+        }
+    }
+    handleKeyPress = (event) => {
+        let digits = ["0","1","2","3","4","5","6","7","8","9"]
+        let prev = this.state.data
+        if (event.key in digits){
+            this.setState({ data: this.state.data + event.key});
+        }
+        switch(event.key) {
+            case '/':
+                this.setState({ data: '', prev_data: prev, comp: '/'});
+                break;
+            case '*':
+                this.setState({ data: '', prev_data: prev, comp: '*'});
+                break;
+            case '+':
+                this.setState({ data: '', prev_data: prev, comp: '+'});
+                break;
+            case '-':
+                this.setState({ data: '', prev_data: prev, comp: '-'});
+                break;
+            case '=':
+                this.calculate();
+                break;
         }
     }
 
@@ -66,6 +91,7 @@ class Calculator extends Component {
         }
     }
     render(){
+        document.addEventListener("keydown",this.handleKeyPress)
         return(
             <div className="Calculator">
                 <Display data={this.state.data}/>
